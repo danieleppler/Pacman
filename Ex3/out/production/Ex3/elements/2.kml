@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Document><name>2</name><open>2</open><Style id="robot">
+  <IconStyle>
+    <scale>1.3</scale>
+    <Icon>
+      <href>C:\Users\danie\IdeaProjects\Ex3\src\taz.png</href>
+    </Icon>
+  </IconStyle>
+</Style>
+<Style id="fruitA">
+  <IconStyle>
+    <scale>1.3</scale>
+    <Icon>
+      <href>"C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\coin.jpg"</href>
+    </Icon>
+  </IconStyle>
+</Style>
+<Style id="fruitB">
+  <IconStyle>
+    <scale>1.3</scale>
+    <Icon>
+      <href>C:\Users\danie\IdeaProjects\Ex3\src\cherry.png</href>
+    </Icon>
+  </IconStyle>
+</Style>
+<Style id="node">
+  <IconStyle>
+    <scale>1.3</scale>
+    <Icon>
+      <href>C:\Users\danie\IdeaProjects\Ex3\src\node.png</href>
+    </Icon>
+  </IconStyle>
+</Style>
+null<Placemark>
+      <TimeStamp>
+        <when>12:30:28.737092100</when>
+      </TimeStamp>
+      <styleUrl>#fruitB</styleUrl>
+      <Point>
+        <coordinates>35.197656770719604,32.10191878639921</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.746072900</when>
+      </TimeStamp>
+      <styleUrl>#fruitB</styleUrl>
+      <Point>
+        <coordinates>35.199963710098416,32.105723673136964</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.747071700</when>
+      </TimeStamp>
+      <styleUrl>#fruitB</styleUrl>
+      <Point>
+        <coordinates>35.195224052340706,32.10575624080796</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.776986300</when>
+      </TimeStamp>
+      <styleUrl>#robot</styleUrl>
+      <Point>
+        <coordinates>35.18753053591606,32.10378225882353</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.856775100</when>
+      </TimeStamp>
+      <styleUrl>#fruitB</styleUrl>
+      <Point>
+        <coordinates>35.197656770719604,32.10191878639921</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.856775100</when>
+      </TimeStamp>
+      <styleUrl>#fruitB</styleUrl>
+      <Point>
+        <coordinates>35.199963710098416,32.105723673136964</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.856775100</when>
+      </TimeStamp>
+      <styleUrl>#fruitB</styleUrl>
+      <Point>
+        <coordinates>35.195224052340706,32.10575624080796</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.18753053591606,32.10378225882353</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.18958953510896,32.10785303529412</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.19341035835351,32.10610841680672</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.197528356739305,32.1053088</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.2016888087167,32.10601755126051</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.20582803389831,32.10625380168067</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.20792948668281,32.10470908739496</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.20746249717514,32.10254648739496</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.20319591121872,32.1031462</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.19597880064568,32.10154696638656</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#node</styleUrl>
+      <Point>
+        <coordinates>35.18910131880549,32.103618700840336</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#robot</styleUrl>
+      <Point>
+        <coordinates>115.63568757062122,25.945564705882163</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#temp</styleUrl>
+      <Point>
+        <coordinates>119.17986975186139,25.479696599802537</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#temp</styleUrl>
+      <Point>
+        <coordinates>119.98729853444559,26.430918284241045</coordinates>
+      </Point>
+    </Placemark>
+<Placemark>
+      <TimeStamp>
+        <when>12:30:28.871732700</when>
+      </TimeStamp>
+      <styleUrl>#temp</styleUrl>
+      <Point>
+        <coordinates>118.32841831924696,26.439060201990827</coordinates>
+      </Point>
+    </Placemark>
+ </Document>
+</kml>
