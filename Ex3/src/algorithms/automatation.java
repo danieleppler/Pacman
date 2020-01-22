@@ -14,7 +14,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class automatation  {
-    private MyGameGui mg;
+    public MyGameGui mg;
     String kmlPath;
 
     public automatation(int l,String kmlPath) throws JSONException, InterruptedException {

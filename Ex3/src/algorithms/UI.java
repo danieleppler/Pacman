@@ -4,7 +4,7 @@ import GUI.MyGameGui;
 import org.json.JSONException;
 
 public class UI {
-    MyGameGui mg;
+    public MyGameGui mg;
 
     public UI(int l) throws JSONException, InterruptedException {
         mg=new MyGameGui(l);

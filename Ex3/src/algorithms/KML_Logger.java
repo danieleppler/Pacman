@@ -1,6 +1,7 @@
 package algorithms;
 
 import Data_Structure.*;
+import GUI.MyGameGui;
 import GUI.SingleGameCreator;
 import GUI.gui_Object;
 import Server.Game_Server;
@@ -14,12 +15,12 @@ import java.time.LocalTime;
 import java.util.Map;
 
 public class KML_Logger {
-    private gui_Object go;
+    private MyGameGui mg;
     public String placeMarkList;
 
 
-    public KML_Logger(gui_Object go) throws JSONException {
-        this.go=go;
+    public KML_Logger(MyGameGui go) throws JSONException {
+        this.mg=go;
     }
 
     public void writeKml(int level,String path_Name,String placeMarks) throws JSONException {
@@ -39,7 +40,7 @@ public class KML_Logger {
                 "  <IconStyle>\n" +
                 "    <scale>1.3</scale>\n" +
                 "    <Icon>\n" +
-                "      <href>\"C:\\\\Users\\\\danie\\\\IdeaProjects\\\\Ex3\\\\src\\\\coin.jpg\"</href>\n" +
+                "      <href>\""+this.mg.fruitAPath+"</href>\n" +
                 "    </Icon>\n" +
                 "  </IconStyle>\n" +
                 "</Style>\n"+
@@ -47,7 +48,7 @@ public class KML_Logger {
                 "  <IconStyle>\n" +
                 "    <scale>1.3</scale>\n" +
                 "    <Icon>\n" +
-                "      <href>C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\cherry.png</href>\n" +
+                "      <href>"+this.mg.fruitBPath+"</href>\n" +
                 "    </Icon>\n" +
                 "  </IconStyle>\n" +
                 "</Style>\n"+
@@ -55,23 +56,23 @@ public class KML_Logger {
                 "  <IconStyle>\n" +
                 "    <scale>1.3</scale>\n" +
                 "    <Icon>\n" +
-                "      <href>C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\node.png</href>\n" +
+                "      <href>"+this.mg.RobotPath+"</href>\n" +
                 "    </Icon>\n" +
                 "  </IconStyle>\n" +
                 "</Style>\n";
         String endging=" </Document>\n" +
                 "</kml>\n";
-        String temp2=this.go.getGame().getGraph();
+        String temp2=this.mg.getGuiObject().getGame().getGraph();
         DGraph temp3=new DGraph(temp2);
         for (Map.Entry<Integer,node> entry:temp3.nodeCollection.entrySet()
              ) {
             placeMarks+=addPlaceMark("node",entry.getValue().getLocation());
         }
-        for (robot r:this.go.getRobotsList()
+        for (robot r:this.mg.getGuiObject().getRobotsList()
         ) {
             placeMarks+=addPlaceMark("robot",r.getLocation());
         }
-        for (fruit f:this.go.getFruitList()
+        for (fruit f:this.mg.getGuiObject().getFruitList()
         ) {
             String temp;
             if (f.getType()==1)

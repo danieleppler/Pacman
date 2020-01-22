@@ -15,6 +15,7 @@ class UITest {
         @Test
         void startGameTest() throws JSONException, InterruptedException {
             this.u=new UI(2);
+            this.u.mg.setPaths("C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\coin.jpg","C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\cherry.png","C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\taz.png");
             this.u.startGame();
         }
 }

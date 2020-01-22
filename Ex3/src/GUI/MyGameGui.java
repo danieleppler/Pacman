@@ -26,6 +26,9 @@ public class MyGameGui  {
     private gui_Object go;
     private JFrame frame;
     public KML_Logger kl;
+    public String fruitAPath="";
+    public String fruitBPath="";
+    public String RobotPath="";
 
     public MyGameGui(int s) throws JSONException, InterruptedException {
         this.frame = new JFrame();
@@ -33,9 +36,14 @@ public class MyGameGui  {
         frame.setSize(300, 300);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.go = SingleGameCreator.create(s);
-        this.kl=new KML_Logger(go);
+        this.kl=new KML_Logger(this);
     }
-
+    public void setPaths(String fruita,String fruitb,String robot)
+    {
+        this.fruitAPath=fruita;
+        this.fruitBPath=fruitb;
+        this.RobotPath=robot;
+    }
     public void initGame() throws JSONException, InterruptedException {
         this.go.game.startGame();
         System.out.println("the game had started");
@@ -221,9 +229,9 @@ public class MyGameGui  {
             fruit temp = updatedFruitList.get(i);
             i++;
             if (temp.getType() == 1){
-                StdDraw.picture(temp.getLocation().x(), temp.getLocation().y(), "C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\coin.jpg", 0.5, 0.09);}
+                StdDraw.picture(temp.getLocation().x(), temp.getLocation().y(), fruitAPath, 0.5, 0.09);}
             else{
-                StdDraw.picture(temp.getLocation().x(), temp.getLocation().y(), "C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\cherry.png", 0.7, 0.2);}
+                StdDraw.picture(temp.getLocation().x(), temp.getLocation().y(), fruitBPath, 0.7, 0.2);}
         }
         this.go.setFruitList(updatedFruitList);
     }
@@ -261,7 +269,7 @@ public class MyGameGui  {
             robot temp = new robot(this.go.game.getRobots().get(i));
             double x = scale(temp.getLocation().x(), 35, 36, 50, 400);
             double y = scale(temp.getLocation().y(), 32, 33, 0, 250);
-            StdDraw.picture(r.getLocation().x(), r.getLocation().y(), "C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\taz.png", 0.8, 0.2);
+            StdDraw.picture(r.getLocation().x(), r.getLocation().y(), RobotPath, 0.8, 0.2);
             temp.setLocation(new Point3D(x, y, 0));
             updatedRobots.add(temp);
             i++;
