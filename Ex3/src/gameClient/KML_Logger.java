@@ -1,4 +1,4 @@
-package algorithms;
+package gameClient;
 
 import Data_Structure.*;
 import GUI.MyGameGui;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class KML_Logger {
     private MyGameGui mg;
-    public String placeMarkList;
+    public String placeMarkList="";
 
 
     public KML_Logger(MyGameGui go) throws JSONException {
@@ -67,18 +67,6 @@ public class KML_Logger {
         for (Map.Entry<Integer,node> entry:temp3.nodeCollection.entrySet()
              ) {
             placeMarks+=addPlaceMark("node",entry.getValue().getLocation());
-        }
-        for (robot r:this.mg.getGuiObject().getRobotsList()
-        ) {
-            placeMarks+=addPlaceMark("robot",r.getLocation());
-        }
-        for (fruit f:this.mg.getGuiObject().getFruitList()
-        ) {
-            String temp;
-            if (f.getType()==1)
-                temp="fruitA";
-            else temp="fruitB";
-            placeMarks+=addPlaceMark("temp",f.getLocation());
         }
         kmlConverted=start+style+placeMarks+endging;
         try

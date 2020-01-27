@@ -1,25 +1,18 @@
 package GUI;
 
 import Data_Structure.*;
-import Server.Game_Server;
 import Threads.cloackThread;
 import Threads.drawingThread;
 import Threads.movingThread;
-import algorithms.KML_Logger;
-import org.json.JSONArray;
+import gameClient.KML_Logger;
+import oop_utils.OOP_Point3D;
 import org.json.JSONException;
-import org.json.JSONObject;
-import utils.Point3D;
-import utils.StdDraw;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferStrategy;
-import java.net.http.HttpHeaders;
+import java.sql.*;
 import java.util.*;
-import java.util.List;
 
 public class MyGameGui  {
 
@@ -29,21 +22,47 @@ public class MyGameGui  {
     public String fruitAPath="";
     public String fruitBPath="";
     public String RobotPath="";
+    public String nodePath="";
+    private boolean isAutomat;
+    public static final String jdbcUrl="jdbc:mysql://db-mysql-ams3-67328-do-user-4468260-0.db.ondigitalocean.com:25060/oop?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
+    public static final String jdbcUser="student";
+    public static final String jdbcUserPassword="OOP2020student";
+    private long playerID;
+    Integer[] levelMaxMoves;
+    private boolean isAutomat2;
 
-    public MyGameGui(int s) throws JSONException, InterruptedException {
+    public MyGameGui(){}
+
+    public MyGameGui(int s,boolean t,long PlayerID) throws JSONException, InterruptedException {
         this.frame = new JFrame();
         this.frame.setLayout(new FlowLayout());
-        frame.setSize(300, 300);
+        if(t==true)frame.setSize(100, 100);
+        else frame.setSize(250, 250);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.go = SingleGameCreator.create(s);
+        this.isAutomat=t;
+        this.playerID=PlayerID;
+        this.go = SingleGameCreator.create(s,isAutomat,this.playerID);
         this.kl=new KML_Logger(this);
+        this.isAutomat2=isAutomat;
     }
-    public void setPaths(String fruita,String fruitb,String robot)
+    public void setPlayerID(long id)
+    {
+        this.playerID=id;
+    }
+
+    public void setLevelMaxMoves(Integer[] levelMaxMoves) {
+        this.levelMaxMoves = levelMaxMoves;
+    }
+
+    public void setPaths(String fruita, String fruitb, String robot, String nodePath)
     {
         this.fruitAPath=fruita;
         this.fruitBPath=fruitb;
         this.RobotPath=robot;
+        this.nodePath=nodePath;
     }
+
+
     public void initGame() throws JSONException, InterruptedException {
         this.go.game.startGame();
         System.out.println("the game had started");
@@ -56,6 +75,7 @@ public class MyGameGui  {
         Thread t2 = new Thread(mt);
         t2.setName("moving");
         t2.start();
+       // if (this.isAutomat2==false) Thread.currentThread().join();
     }
 
     public void printReasult() {
@@ -65,7 +85,8 @@ public class MyGameGui  {
             totalPoints += r.getPoints();
         }
         JFrame gameOver = new JFrame();
-        JOptionPane.showMessageDialog(gameOver, "The game has ended,your score is : " + totalPoints);
+        JOptionPane.showMessageDialog(gameOver, "The game has ended,your score is : " + totalPoints +"\n"+"the number of moves " +
+                "is: "+this.go.finalMovesNum);
     }
 
     public void initGui() throws JSONException {
@@ -168,8 +189,8 @@ public class MyGameGui  {
             }
             StdDraw.setPenRadius(0.002);
             StdDraw.setPenColor(Color.green);
-            dataStructure.node_data src = g.nodeCollection.get(entry.getKey()[0]);
-            dataStructure.node_data dest = g.nodeCollection.get(entry.getKey()[1]);
+            Data_Structure.node_data src = g.nodeCollection.get(entry.getKey()[0]);
+            Data_Structure.node_data dest = g.nodeCollection.get(entry.getKey()[1]);
             String temp1 = src.getInfo();
             String[] point1 = new String[]{"", "", ""};
             int j = 0;
@@ -186,14 +207,14 @@ public class MyGameGui  {
                     k++;
                 else point2[k] += temp2.charAt(i);
             }
-            Point3D point3 = new Point3D(Double.parseDouble(point1[0]), Double.parseDouble(point1[1]), 0);
-            Point3D point4 = new Point3D(Double.parseDouble(point2[0]), Double.parseDouble(point2[1]), 0);
+            OOP_Point3D point3 = new OOP_Point3D(Double.parseDouble(point1[0]), Double.parseDouble(point1[1]), 0);
+            OOP_Point3D point4 = new OOP_Point3D(Double.parseDouble(point2[0]), Double.parseDouble(point2[1]), 0);
             String weight = String.valueOf(entry.getValue().getWeight());
             if (isDrawned == false) {
                 StdDraw.line(point3.x(), point3.y(), point4.x(), point4.y());
-                StdDraw.setPenRadius(0.001);
+                StdDraw.setPenRadius(0.00001);
                 StdDraw.setPenColor(Color.RED);
-                StdDraw.text(point4.x() - point3.x(), point4.y() - point3.y(), weight);
+                //StdDraw.text((point4.x()+point3.x())/2, (point4.y() + point3.y())/2, weight);
                 drawnedEdges.add(entry.getValue());
             }
         }
@@ -227,6 +248,9 @@ public class MyGameGui  {
         int i = 0;
         while (i < updatedFruitList.size()) {
             fruit temp = updatedFruitList.get(i);
+            double x = scale(temp.getLocation().x(), 35, 36, 50, 400);
+            double y = scale(temp.getLocation().y(), 32, 33, 0, 250);
+            temp.setLocation(new Point3D(x, y, 0));
             i++;
             if (temp.getType() == 1){
                 StdDraw.picture(temp.getLocation().x(), temp.getLocation().y(), fruitAPath, 0.5, 0.09);}
@@ -290,11 +314,11 @@ public class MyGameGui  {
             while (this.go.game.chooseNextEdge(r.getId(), r.getCurrNodeDest()) != -1) {
             }
             HashMap<Integer, node> neighbors = new HashMap<>();
-            Collection<dataStructure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
-            Collection<dataStructure.node_data> nodes = this.go.g.getV();
+            Collection<Data_Structure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
+            Collection<Data_Structure.node_data> nodes = this.go.g.getV();
             //finding all the neighbors of the robot
-            for (dataStructure.node_data n : nodes) {
-                for (dataStructure.edge_data ed : robotEdges
+            for (Data_Structure.node_data n : nodes) {
+                for (Data_Structure.edge_data ed : robotEdges
                 ) {
                     if (n.getTag() == ed.getDest())
                         neighbors.put(n.getKey(), (node) n);
@@ -319,11 +343,11 @@ public class MyGameGui  {
             robot r = this.go.getRobotsList().get(0);
             // while (this.go.game.chooseNextEdge(r.getId(),r.getCurrNodeDest())==-1){}
             HashMap<Integer, node> neighbors = new HashMap<>();
-            Collection<dataStructure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
-            Collection<dataStructure.node_data> nodes = this.go.g.getV();
+            Collection<Data_Structure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
+            Collection<Data_Structure.node_data> nodes = this.go.g.getV();
             //finding all the neighbors of the robot
-            for (dataStructure.node_data n : nodes) {
-                for (dataStructure.edge_data ed : robotEdges
+            for (Data_Structure.node_data n : nodes) {
+                for (Data_Structure.edge_data ed : robotEdges
                 ) {
                     if (n.getTag() == ed.getDest())
                         neighbors.put(n.getKey(), (node) n);
@@ -347,11 +371,11 @@ public class MyGameGui  {
             robot r = this.go.getRobotsList().get(1);
             // while (this.go.game.chooseNextEdge(r.getId(),r.getCurrNodeDest())==-1){}
             HashMap<Integer, node> neighbors = new HashMap<>();
-            Collection<dataStructure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
-            Collection<dataStructure.node_data> nodes = this.go.g.getV();
+            Collection<Data_Structure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
+            Collection<Data_Structure.node_data> nodes = this.go.g.getV();
             //finding all the neighbors of the robot
-            for (dataStructure.node_data n : nodes) {
-                for (dataStructure.edge_data ed : robotEdges
+            for (Data_Structure.node_data n : nodes) {
+                for (Data_Structure.edge_data ed : robotEdges
                 ) {
                     if (n.getTag() == ed.getDest())
                         neighbors.put(n.getKey(), (node) n);
@@ -374,11 +398,11 @@ public class MyGameGui  {
             robot r = this.go.getRobotsList().get(1);
             // while (this.go.game.chooseNextEdge(r.getId(),r.getCurrNodeDest())==-1){}
             HashMap<Integer, node> neighbors = new HashMap<>();
-            Collection<dataStructure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
-            Collection<dataStructure.node_data> nodes = this.go.g.getV();
+            Collection<Data_Structure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
+            Collection<Data_Structure.node_data> nodes = this.go.g.getV();
             //finding all the neighbors of the robot
-            for (dataStructure.node_data n : nodes) {
-                for (dataStructure.edge_data ed : robotEdges
+            for (Data_Structure.node_data n : nodes) {
+                for (Data_Structure.edge_data ed : robotEdges
                 ) {
                     if (n.getTag() == ed.getDest())
                         neighbors.put(n.getKey(), (node) n);
@@ -401,11 +425,11 @@ public class MyGameGui  {
             robot r = this.go.getRobotsList().get(2);
             // while (this.go.game.chooseNextEdge(r.getId(),r.getCurrNodeDest())==-1){}
             HashMap<Integer, node> neighbors = new HashMap<>();
-            Collection<dataStructure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
-            Collection<dataStructure.node_data> nodes = this.go.g.getV();
+            Collection<Data_Structure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
+            Collection<Data_Structure.node_data> nodes = this.go.g.getV();
             //finding all the neighbors of the robot
-            for (dataStructure.node_data n : nodes) {
-                for (dataStructure.edge_data ed : robotEdges
+            for (Data_Structure.node_data n : nodes) {
+                for (Data_Structure.edge_data ed : robotEdges
                 ) {
                     if (n.getTag() == ed.getDest())
                         neighbors.put(n.getKey(), (node) n);
@@ -428,11 +452,11 @@ public class MyGameGui  {
             robot r = this.go.getRobotsList().get(2);
             // while (this.go.game.chooseNextEdge(r.getId(),r.getCurrNodeDest())==-1){}
             HashMap<Integer, node> neighbors = new HashMap<>();
-            Collection<dataStructure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
-            Collection<dataStructure.node_data> nodes = this.go.g.getV();
+            Collection<Data_Structure.edge_data> robotEdges = this.go.g.getE(r.getCurrNode());
+            Collection<Data_Structure.node_data> nodes = this.go.g.getV();
             //finding all the neighbors of the robot
-            for (dataStructure.node_data n : nodes) {
-                for (dataStructure.edge_data ed : robotEdges
+            for (Data_Structure.node_data n : nodes) {
+                for (Data_Structure.edge_data ed : robotEdges
                 ) {
                     if (n.getTag() == ed.getDest())
                         neighbors.put(n.getKey(), (node) n);
@@ -458,5 +482,69 @@ public class MyGameGui  {
 
     public gui_Object getGuiObject() {
         return this.go;
+    }
+
+    public void printFromDB()
+    {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection =
+                    DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);
+            Statement statement = connection.createStatement();
+            String allCustomersQuery = "SELECT * FROM Logs where userID="+this.playerID;
+            String allCustomersQuery2 = "SELECT *  FROM Logs";
+            ResultSet resultSet = statement.executeQuery(allCustomersQuery);
+            int ind =0;
+            String line="";
+            int currentLevel=0;
+            int maxLevelScore=0;
+            int currentCase=0;
+            int minLevelMoves=Integer.MAX_VALUE;
+            int[] passedLevels=new int[50];
+            int refPoint=0;
+            while(resultSet.next())
+            {
+                boolean ifLevelShowed=false;
+                if (resultSet.getInt("levelID")!=currentLevel)
+                {
+                    for (int i=0;i<passedLevels.length;i++)
+                        if (resultSet.getInt("levelID")==passedLevels[i])
+                            ifLevelShowed=true;
+                    if (!ifLevelShowed) {
+                        line += "Id: " + resultSet.getInt("UserID") + ", level: " + currentLevel + ", score: " + maxLevelScore + ", moves: " + minLevelMoves + ", time: " + resultSet.getDate("time") + "\n";
+                        currentCase++;
+                        maxLevelScore = resultSet.getInt("score");
+                        minLevelMoves = resultSet.getInt("moves");
+                        currentLevel = resultSet.getInt("levelID");
+                        passedLevels[refPoint]=currentLevel;
+                        refPoint++;
+                    }
+                }
+                else {
+                    int tempScore = resultSet.getInt("score");
+                    int tempMoves = resultSet.getInt("moves");
+                    if (tempScore > maxLevelScore && tempMoves < this.levelMaxMoves[currentCase]) {
+                        maxLevelScore = tempScore;
+                        if (tempMoves<minLevelMoves)
+                            minLevelMoves=tempMoves;
+                    }
+                }
+                ind++;
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+            JFrame idData = new JFrame();
+            JOptionPane.showMessageDialog(idData, line+" This user played "+ ind + " games on the server"+ "\n"+" His current level is: "+ currentLevel);
+        }
+
+        catch (SQLException sqle) {
+            System.out.println("SQLException: " + sqle.getMessage());
+            System.out.println("Vendor Error: " + sqle.getErrorCode());
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 }

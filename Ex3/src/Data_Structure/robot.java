@@ -1,13 +1,13 @@
 package Data_Structure;
 
+import GUI.Point3D;
 import com.google.gson.Gson;
-import dataStructure.DGraph;
-import dataStructure.edge_data;
-import dataStructure.graph;
-import dataStructure.node_data;
+import Data_Structure.DGraph;
+import Data_Structure.edge_data;
+import Data_Structure.graph;
+import Data_Structure.node_data;
 import org.json.JSONException;
 import org.json.JSONObject;
-import utils.Point3D;
 
 import java.awt.*;
 import java.util.StringTokenizer;
@@ -46,7 +46,10 @@ public class robot {
         this.position=new Point3D(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()));
     }
 
-
+    public double getSpeed()
+    {
+        return this.speed;
+    }
     public String toJSON() {
         String ans = new Gson().toJson(this);
         return ans;

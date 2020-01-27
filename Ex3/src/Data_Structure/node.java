@@ -1,7 +1,6 @@
 package Data_Structure;
 
-import dataStructure.node_data;
-import utils.Point3D;
+import GUI.Point3D;
 
 import java.util.StringTokenizer;
 

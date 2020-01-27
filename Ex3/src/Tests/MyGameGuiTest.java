@@ -3,17 +3,16 @@ package Tests;
 import GUI.MyGameGui;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MyGameGuiTest {
+   class MyGameGuiTest {
     private MyGameGui mgg;
 
     @BeforeEach
     void init() throws JSONException, InterruptedException {
-        for (int i=22;i<24;i++)
-            this.mgg=new MyGameGui(i);
-        System.exit(0);
+        this.mgg=new MyGameGui();
     }
 
     @org.junit.jupiter.api.Test
@@ -22,5 +21,14 @@ class MyGameGuiTest {
 
     @org.junit.jupiter.api.Test
     void startPlaying() {
+    }
+
+    @Test
+    void printFromDB()
+    {
+        this.mgg.setPlayerID(205487770);
+        Integer[] arr={290,580,580,500,580,580,580,290,580,290,1140};
+        this.mgg.setLevelMaxMoves(arr);
+        this.mgg.printFromDB();
     }
 }

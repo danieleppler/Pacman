@@ -1,16 +1,13 @@
-package algorithms;
+package gameClient;
 
 import Data_Structure.*;
 import GUI.MyGameGui;
 import GUI.Point3D;
-import Server.RobotG;
-import Threads.secondRobotMoving;
+import GUI.SingleGameCreator;
 import Threads.singleRobotThread;
-import Threads.thirdRobotMoving;
+import algorithms.graph_algorithms;
 import org.json.JSONException;
-import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,8 +18,8 @@ public class automatation {
     private String kmlPath;
     public ArrayList<fruit> eatenFruits = new ArrayList<>();
 
-    public automatation(int l, String kmlPath) throws JSONException, InterruptedException {
-        this.mg = new MyGameGui(l, true);
+    public automatation(int l, String kmlPath,long playerID) throws JSONException, InterruptedException {
+        this.mg = new MyGameGui(l, true,playerID);
         this.kmlPath = kmlPath;
         mg.initGui();
     }
@@ -62,7 +59,7 @@ public class automatation {
             t1.start();
             t3.start();
         }
-        Thread.currentThread().join();
+        while (this.mg.getGuiObject().getGame().isRunning()){}
         String kml = this.mg.kl.writeKml(l, this.kmlPath, this.mg.kl.placeMarkList);
         this.mg.getGuiObject().getGame().sendKML(kml);
     }
@@ -129,41 +126,36 @@ public class automatation {
             ArrayList<fruit> currentFruitsOnBoard = mg.getGuiObject().getFruitList();
             while (i < currentFruitsOnBoard.size() && mg.getGuiObject().getGame().isRunning()) {
                 boolean flag = true;
-                if (!mg.getGuiObject().getGame().isRunning())
-                    break;
-                fruit f = currentFruitsOnBoard.get(i);
                 System.out.println(Thread.currentThread().getName() + " was here!");
+                //we are chosing the unchodes fruits by these 2  conditions//:
+                //1.chose a fruit thats not appearing in the eatenFruit list.
+                // 2.chose the fruit that is the most distanced from the//last chosen fruit in the eatenFruit list.
+                fruit f = currentFruitsOnBoard.get(i);
                 Iterator<fruit> it = this.eatenFruits.iterator();
                 while (it.hasNext() && mg.getGuiObject().getGame().isRunning()) {
                     fruit isEqual = it.next();
                     if (f.getLocation().x() == isEqual.getLocation().x() && f.getLocation().y() == isEqual.getLocation().y())
                         flag = false;
                 }
-                //we are chosing the unchodes fruits by the condition: chose the fruit that is the most distanced from the
-                //last chosen fruit
                 if (flag) {
-                    double temp1 = ga.shortestPathDist(r.getCurrNode(), f.getCurrEdge().key[0]);
-                    if (temp1 < min) {
-                        min = temp1;
-                        nearestNodeEdge = f.getCurrEdge();
-                        srcOrDest = 0;
-                        eatenFruit = f;
-                    }
-                    double temp2 = ga.shortestPathDist(r.getCurrNode(), f.getCurrEdge().key[1]);
-                    if (temp2 < min) {
-                        min = temp2;
-                        nearestNodeEdge = f.getCurrEdge();
-                        srcOrDest = 1;
-                        eatenFruit = f;
-                    }
+                        double temp1 = ga.shortestPathDist(r.getCurrNode(), f.getCurrEdge().key[0]);
+                        if (temp1 < min) {
+                            min = temp1;
+                            nearestNodeEdge = f.getCurrEdge();
+                            srcOrDest = 0;
+                            eatenFruit = f;
+                        }
+                        double temp2 = ga.shortestPathDist(r.getCurrNode(), f.getCurrEdge().key[1]);
+                        if (temp2 < min) {
+                            min = temp2;
+                            nearestNodeEdge = f.getCurrEdge();
+                            srcOrDest = 1;
+                            eatenFruit = f;
+                        }
                 }
                 i++;
             }
-            if (!mg.getGuiObject().getGame().isRunning())
-                return null;
-            if (eatenFruit != null)
-                this.eatenFruits.add(eatenFruit);
-            else return way;
+               this.eatenFruits.add(eatenFruit);
             if (srcOrDest == 1) {
                 way = ga.shortestPath(r.getCurrNode(), nearestNodeEdge.getDest());
                 way.add(mg.getGuiObject().getGraph().nodeCollection.get(nearestNodeEdge.getSrc()));

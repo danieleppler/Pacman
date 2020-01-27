@@ -1,6 +1,7 @@
 package Data_Structure;
 
-import utils.Point3D;
+import GUI.Point3D;
+
 
 /**
  * This interface represents the set of operations applicable on a 

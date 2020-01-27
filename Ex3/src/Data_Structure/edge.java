@@ -1,9 +1,11 @@
 package Data_Structure;
 
 
-import dataStructure.edge_data;
+import Data_Structure.edge_data;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 public class edge implements edge_data {
@@ -26,6 +28,8 @@ public class edge implements edge_data {
         this.dest=d;
         this.weight=w;
     }
+
+
 
     @Override
     public int getSrc() {

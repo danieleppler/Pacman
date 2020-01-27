@@ -1,4 +1,4 @@
-package algorithms;
+package gameClient;
 
 import java.util.Collection;
 import java.util.Iterator;

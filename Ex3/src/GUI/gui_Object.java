@@ -13,6 +13,7 @@ public class gui_Object {
     private ArrayList<robot> robotsList;
     Game_Server game;
     DGraph g;
+    public double finalMovesNum;
 
     public gui_Object(ArrayList<fruit> f, ArrayList<robot> r, Game_Server g,DGraph g2)
     {

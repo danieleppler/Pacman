@@ -1,11 +1,7 @@
 package Tests;
 
-import GUI.MyGameGui;
-import algorithms.KML_Logger;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class KML_LoggerTest {
     @Test

@@ -1,7 +1,7 @@
 package Data_Structure;
 
-import dataStructure.edge_data;
-import dataStructure.node_data;
+import Data_Structure.edge_data;
+import Data_Structure.node_data;
 
 import java.util.Collection;
 /**
@@ -17,7 +17,7 @@ public interface graph {
      * @param key - the node_id
      * @return the node_data by the node_id, null if none.
      */
-    public dataStructure.node_data getNode(int key);
+    public Data_Structure.node_data getNode(int key);
     /**
      * return the data of the edge (src,dest), null if none.
      * Note: this method should run in O(1) time.
@@ -25,7 +25,7 @@ public interface graph {
      * @param dest
      * @return
      */
-    public dataStructure.edge_data getEdge(int src, int dest);
+    public Data_Structure.edge_data getEdge(int src, int dest);
     /**
      * add a new node to the graph with the given node_data.
      * Note: this method should run in O(1) time.
@@ -46,7 +46,7 @@ public interface graph {
      * Note: this method should run in O(1) time.
      * @return Collection<node_data>
      */
-    public Collection<dataStructure.node_data> getV();
+    public Collection<Data_Structure.node_data> getV();
     /**
      * This method return a pointer (shallow copy) for the
      * collection representing all the edges getting out of
@@ -54,7 +54,7 @@ public interface graph {
      * Note: this method should run in O(1) time.
      * @return Collection<edge_data>
      */
-    public Collection<dataStructure.edge_data> getE(int node_id);
+    public Collection<Data_Structure.edge_data> getE(int node_id);
     /**
      * Delete the node (with the given ID) from the graph -
      * and removes all edges which starts or ends at this node.

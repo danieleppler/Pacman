@@ -13,7 +13,7 @@ package algorithms;
  */
 
 import Data_Structure.graph;
-import dataStructure.node_data;
+import Data_Structure.node_data;
 
 import java.io.IOException;
 import java.util.List;
@@ -60,7 +60,7 @@ public interface graph_algorithms {
 	 * @param dest - end (target) node
 	 * @return
 	 */
-	public List<dataStructure.node_data> shortestPath(int src, int dest);
+	public List<Data_Structure.node_data> shortestPath(int src, int dest);
  	/**
 	 * computes a relatively short path which visit each node in the targets List.
 	 * Note: this is NOT the classical traveling salesman problem, 

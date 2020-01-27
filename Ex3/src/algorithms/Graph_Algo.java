@@ -1,12 +1,10 @@
 package algorithms;
 
-import Data_Structure.DGraph;
-import Data_Structure.edge;
-import Data_Structure.node;
+import Data_Structure.*;
 import com.google.gson.*;
-import dataStructure.graph;
-import dataStructure.node_data;
+import Data_Structure.node_data;
 
+import java.beans.VetoableChangeListener;
 import java.io.*;
 import java.util.*;
 
@@ -102,51 +100,30 @@ public class Graph_Algo implements graph_algorithms {
 
 
 	@Override
-	public double shortestPathDist(int src, int dest) {
+	synchronized public double shortestPathDist(int src, int dest) {
 		// TODO Auto-generated method stub
-		return nodeTagging(src, dest,dest,new LinkedList<Integer>());
+		Dijkstra d=nodeTagging(this.singleGraph,src);
+		return d.vertices[dest].minDistance;
 	}
 
 
 	@Override
-	public List<node_data> shortestPath(int src, int dest) {
+	public List<Data_Structure.node_data> shortestPath(int src, int dest) {
 		List<node_data> shortestPath= new LinkedList<>();
-		nodeTagging(src,dest,dest,new LinkedList<Integer>());
-		node_data tempNode=this.singleGraph.nodeCollection.get(dest);
-		shortestPath.add(tempNode);
-		while (src!=dest)
+		Dijkstra d=nodeTagging(this.singleGraph,src);
+		Vertex pointer=d.vertices[dest];
+		while (pointer.tag!=src)
 		{
-			ArrayList<node_data> possilbeConnections=new ArrayList<>();
-			for (Map.Entry<Integer[],edge> entry:this.singleGraph.edgeCollection.entrySet()
-				 ) {
-				if(entry.getKey()[1]==tempNode.getTag())
-					possilbeConnections.add(this.singleGraph.nodeCollection.get(entry.getKey()[0]));
-			}
-			Iterator<node_data> it=possilbeConnections.listIterator();
-			node_data minNode=possilbeConnections.get(0);
-			while (it.hasNext())
-			{
-				tempNode=it.next();
-				if (tempNode.getWeight()<minNode.getWeight())
-					minNode=tempNode;
-			}
-			shortestPath.add(minNode);
-			dest=minNode.getTag();
-			for (Map.Entry<Integer,node> entry:this.singleGraph.nodeCollection.entrySet()
-			) {
-				if(entry.getValue().getTag()==dest)
-					tempNode=entry.getValue();
-			}
+			shortestPath.add(new node(pointer.tag,pointer.tag));
+			pointer=d.vertices[pointer.prev];
 		}
-		Stack<node_data> reverseHelpingStack=new Stack<>();
-		Iterator<node_data> it=shortestPath.iterator();
-		while (it.hasNext()) {
-			tempNode = it.next();
-			reverseHelpingStack.push(tempNode);
+		Stack reverseStack=new Stack();
+		while (!shortestPath.isEmpty()) {
+			reverseStack.push(shortestPath.get(0));
+			shortestPath.remove(0);
 		}
-		shortestPath=new ArrayList<>();
-		while (!reverseHelpingStack.empty())
-			shortestPath.add(reverseHelpingStack.pop());
+		while (!reverseStack.isEmpty())
+			shortestPath.add((node_data) reverseStack.pop());
 		return shortestPath;
 	}
 
@@ -195,53 +172,18 @@ public class Graph_Algo implements graph_algorithms {
 	}
 
 
-	public double nodeTagging(int srcKey,int destKey,int fromKey,List<Integer> passedNodes)
-	{
-		if (destKey==srcKey){
-			this.singleGraph.nodeCollection.get(destKey).setWeight(0);
-			return 0;}
 
-		double[][] possilbeConnections=new double[2][this.singleGraph.edgeCollection.size()];
-		int tempNodeTag=this.singleGraph.nodeCollection.get(destKey).getTag();
-		int i=0;
-		int connectionsNumber=0;
-		//checking neighbors
-		for (Map.Entry<Integer[],edge> entry:this.singleGraph.edgeCollection.entrySet()
+	public Dijkstra nodeTagging(DGraph g, int src) {
+		Vertex[] v=new Vertex[g.nodeCollection.size()];
+		for (Map.Entry<Integer,node> entry:g.nodeCollection.entrySet()
 			 ) {
-			boolean flag=true;
-			int temp=entry.getKey()[1];
-			for (int k=0;k<passedNodes.size();k++)
-				if (temp==passedNodes.get(k))
-					flag=false;
-			if (flag!=false){
-			if ( temp==tempNodeTag && entry.getKey()[0] != fromKey) {
-				possilbeConnections[0][i] = entry.getKey()[0];
-				possilbeConnections[1][i] = entry.getValue().getWeight();
-				connectionsNumber++;
-				i++;
-			}
-			}
+			Vertex v2=new Vertex(entry.getKey(),Integer.MAX_VALUE);
+			v2.edges= g.getE(entry.getKey()).toArray(new edge[0]);
+			v[v2.tag]=v2;
 		}
-		if (connectionsNumber==0)
-			return Integer.MAX_VALUE;
-		if(connectionsNumber==1) {
-			passedNodes.add(destKey);
-			this.singleGraph.nodeCollection.get(destKey).setWeight(nodeTagging(srcKey, (int) possilbeConnections[0][0], destKey, passedNodes)
-					+ possilbeConnections[1][0]);
-		}
-			else
-				{
-					passedNodes.add(destKey);
-					double min=possilbeConnections[1][0]+nodeTagging(srcKey, (int) possilbeConnections[0][0],destKey,passedNodes);
-					for (i=1;i<connectionsNumber;i++) {
-						double temp=possilbeConnections[1][i]+nodeTagging(srcKey, (int)possilbeConnections[0][i],destKey,passedNodes);
-						if(temp<min)
-						min=temp;
-				}
-				this.singleGraph.nodeCollection.get(destKey).setWeight(min);
-				}
-			passedNodes.remove(passedNodes.size()-1);
-			return this.singleGraph.nodeCollection.get(destKey).getWeight();
+		Dijkstra d=new Dijkstra(v,src);
+		d.computePaths();
+		return d;
 	}
 
 
@@ -252,3 +194,4 @@ public class Graph_Algo implements graph_algorithms {
 		return clone;
 	}
 }
+

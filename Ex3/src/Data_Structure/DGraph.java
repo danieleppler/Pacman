@@ -1,9 +1,7 @@
 package Data_Structure;
 
-import elements.NodeData;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import utils.Point3D;
 
 import java.io.File;
 import java.util.*;
@@ -27,7 +25,6 @@ public class DGraph implements graph {
     public DGraph(String file_name) {
         try {
             this.init();
-            NodeData.resetCount();
             String jsonString =file_name;
             JSONObject graph = new JSONObject(jsonString);
             JSONArray nodes = graph.getJSONArray("Nodes");
@@ -56,7 +53,7 @@ public class DGraph implements graph {
 
     }
 
-    private void init() {
+    public void init() {
         this.nodeCollection=new HashMap<Integer,node>();
         this.edgeCollection=new HashMap<Integer[],edge>();
     }
@@ -67,20 +64,20 @@ public class DGraph implements graph {
     }
 
     @Override
-    public dataStructure.node_data getNode(int key) {
+    public Data_Structure.node_data getNode(int key) {
         // TODO Auto-generated method stub
-        return (dataStructure.node_data) nodeCollection.get(key);
+        return (Data_Structure.node_data) nodeCollection.get(key);
     }
 
     @Override
-    public dataStructure.edge_data getEdge(int src, int dest) {
+    public Data_Structure.edge_data getEdge(int src, int dest) {
         // TODO Auto-generated method stub
         int key[]={src,dest};
-        return (dataStructure.edge_data) edgeCollection.get(key);
+        return (Data_Structure.edge_data) edgeCollection.get(key);
     }
 
     @Override
-    public void addNode(dataStructure.node_data n) {
+    public void addNode(Data_Structure.node_data n) {
         this.nodeCollection.put(n.getKey(), (node) n);
     }
 
@@ -94,9 +91,9 @@ public class DGraph implements graph {
     }
 
     @Override
-    public Collection<dataStructure.node_data> getV() {
+    public Collection<Data_Structure.node_data> getV() {
         // TODO Auto-generated method stub
-        Collection<dataStructure.node_data> temp=new HashSet<>();
+        Collection<Data_Structure.node_data> temp=new HashSet<>();
         for (Map.Entry<Integer,node> entrty:this.nodeCollection.entrySet())
             temp.add(entrty.getValue());
         return temp;
@@ -104,9 +101,9 @@ public class DGraph implements graph {
 
 
     @Override
-    public Collection<dataStructure.edge_data> getE(int node_id)
+    public Collection<Data_Structure.edge_data> getE(int node_id)
     {
-        Collection<dataStructure.edge_data> temp= new HashSet<>();
+        Collection<Data_Structure.edge_data> temp= new HashSet<>();
         for (Map.Entry<Integer[],edge> entry:this.edgeCollection.entrySet()
         ) {
             if (entry.getKey()[0] == node_id)
@@ -116,19 +113,19 @@ public class DGraph implements graph {
     }
 
     @Override
-    public dataStructure.node_data removeNode(int key) {
+    public Data_Structure.node_data removeNode(int key) {
         // TODO Auto-generated method stub
         node n=this.nodeCollection.get(key);
         this.nodeCollection.remove(key);
-        return (dataStructure.node_data) n;
+        return (Data_Structure.node_data) n;
     }
 
     @Override
-    public dataStructure.edge_data removeEdge(int src, int dest) {
+    public Data_Structure.edge_data removeEdge(int src, int dest) {
         Integer key[]={src,dest};
         edge_data e= (edge_data) edgeCollection.get(key);
         edgeCollection.remove(key);
-        return (dataStructure.edge_data) e;
+        return (Data_Structure.edge_data) e;
     }
 
     @Override

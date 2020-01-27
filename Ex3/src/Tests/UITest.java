@@ -1,12 +1,8 @@
 package Tests;
 
-import algorithms.UI;
+import gameClient.UI;
 import org.json.JSONException;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class UITest {
         private UI u;
@@ -14,8 +10,9 @@ class UITest {
 
         @Test
         void startGameTest() throws JSONException, InterruptedException {
-            this.u=new UI(2);
-            this.u.mg.setPaths("C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\coin.jpg","C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\cherry.png","C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\taz.png");
+            this.u=new UI(20);
+            u.mg.setPaths("C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\images\\coin.jpg","C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\images\\cherry.png","C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\images\\taz.png","C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\images\\node.png");
             this.u.startGame();
+            Thread.currentThread().join();
         }
 }
