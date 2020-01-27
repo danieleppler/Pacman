@@ -4,14 +4,15 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import Data_Structure.DGraph;
+import Data_Structure.edge_data;
+import Data_Structure.graph;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import Server.Game_Server;
 import Server.game_service;
-import dataStructure.DGraph;
-import dataStructure.edge_data;
-import dataStructure.graph;
+
 /**
  * This class represents a simple example for using the GameServer API:
  * the main file performs the following tasks:
@@ -36,7 +37,6 @@ public class SimpleGameClient {
 		game_service game = Game_Server.getServer(2); // you have [0,23] games
 		String g = game.getGraph();
 		DGraph gg = new DGraph();
-		gg.init(g);
 		String info = game.toString();
 		System.out.println(info);
 		System.out.println(g);

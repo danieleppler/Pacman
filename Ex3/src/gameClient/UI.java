@@ -7,7 +7,7 @@ public class UI {
     public MyGameGui mg;
 
     public UI(int l) throws JSONException, InterruptedException {
-        mg=new MyGameGui(l);
+        mg=new MyGameGui(l,false);
         mg.drawPanel();
     }
 

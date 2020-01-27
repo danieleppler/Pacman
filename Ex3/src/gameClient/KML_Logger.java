@@ -2,11 +2,11 @@ package algorithms;
 
 import Data_Structure.*;
 import GUI.MyGameGui;
+import GUI.Point3D;
 import GUI.SingleGameCreator;
 import GUI.gui_Object;
 import Server.Game_Server;
 import org.json.JSONException;
-import utils.Point3D;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +23,7 @@ public class KML_Logger {
         this.mg=go;
     }
 
-    public void writeKml(int level,String path_Name,String placeMarks) throws JSONException {
+    public String writeKml(int level,String path_Name,String placeMarks) throws JSONException {
         String kmlConverted="";
         String start="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<kml xmlns=\"http://earth.google.com/kml/2.2\">\n<Document>"
                + "<name>"+level+"</name>"
@@ -32,7 +32,7 @@ public class KML_Logger {
                 "  <IconStyle>\n" +
                 "    <scale>1.3</scale>\n" +
                 "    <Icon>\n" +
-                "      <href>C:\\Users\\danie\\IdeaProjects\\Ex3\\src\\taz.png</href>\n" +
+                "      <href>"+this.mg.RobotPath+"</href>\n" +
                 "    </Icon>\n" +
                 "  </IconStyle>\n" +
                 "</Style>\n"+
@@ -40,7 +40,7 @@ public class KML_Logger {
                 "  <IconStyle>\n" +
                 "    <scale>1.3</scale>\n" +
                 "    <Icon>\n" +
-                "      <href>\""+this.mg.fruitAPath+"</href>\n" +
+                "      <href>"+this.mg.fruitAPath+"</href>\n" +
                 "    </Icon>\n" +
                 "  </IconStyle>\n" +
                 "</Style>\n"+
@@ -56,7 +56,7 @@ public class KML_Logger {
                 "  <IconStyle>\n" +
                 "    <scale>1.3</scale>\n" +
                 "    <Icon>\n" +
-                "      <href>"+this.mg.RobotPath+"</href>\n" +
+                "      <href>"+this.mg.nodePath+"</href>\n" +
                 "    </Icon>\n" +
                 "  </IconStyle>\n" +
                 "</Style>\n";
@@ -94,6 +94,7 @@ public class KML_Logger {
             e.printStackTrace();
             System.out.println("could not find the specific file");
         }
+        return kmlConverted;
     }
 
     public String addPlaceMark(String type, Point3D objectLocation)
