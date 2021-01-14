@@ -1,7 +1,7 @@
 
 # Overview
 
-This projcets contains a small pacman game made in java languae. Pick one of 21 stages and collects as many point as you can in bounded time.
+This projcet contains a small pacman game made in java languae. Pick one of 21 stages and collects as many point as you can in bounded time.
 
 # Features
 * The game have 21 stages you can chose from, sorted from the first stage that is the most easiest one to the 21-th stage which is the most difficult.
